@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#102a43">
-  <meta name="description" content="Estudos devocionais em áudio — Conociendo al Novio.">
+  <meta name="theme-color" content="#46513d">
+  <meta name="description" content="Conociendo al Novio — una jornada de seis meses para conocer más profundamente a Jesús.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Conociendo">
+  <meta name="apple-mobile-web-app-title" content="Conociendo al Novio">
   <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
   <title>Conociendo al Novio</title>
   <style>
     :root {
       color-scheme: light;
-      --navy: #102a43;
-      --navy-2: #173f5f;
-      --blue: #2f6f9f;
-      --gold: #c49a38;
-      --gold-soft: #f4e8bf;
-      --paper: #fbfaf6;
+      --navy: #46513d;
+      --navy-2: #59634d;
+      --blue: #68735d;
+      --gold: #c5a56a;
+      --gold-soft: #eadbb9;
+      --paper: #f7f2e8;
       --white: #ffffff;
-      --ink: #172b3a;
-      --muted: #647482;
+      --ink: #403b32;
+      --muted: #756e61;
       --danger: #a33a3a;
       --success: #237653;
-      --border: rgba(16, 42, 67, .12);
-      --shadow: 0 14px 40px rgba(16, 42, 67, .10);
+      --border: rgba(70, 81, 61, .15);
+      --shadow: 0 14px 40px rgba(75, 64, 47, .11);
       --radius: 20px;
     }
 
@@ -37,8 +38,8 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 90% 0%, rgba(196,154,56,.16), transparent 28rem),
-        linear-gradient(180deg, #eef5f8 0, var(--paper) 28rem);
+        radial-gradient(circle at 90% 0%, rgba(197,165,106,.22), transparent 30rem),
+        linear-gradient(180deg, #f4efe4 0, var(--paper) 30rem);
     }
     button, input { font: inherit; }
     button { cursor: pointer; }
@@ -59,22 +60,21 @@
       padding: 34px 26px;
       text-align: center;
       background: rgba(255,255,255,.92);
-      border: 1px solid rgba(196,154,56,.28);
+      border: 1px solid rgba(197,165,106,.35);
       border-radius: 28px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
     }
     .emblem {
-      width: 76px;
-      height: 76px;
+      width: 92px;
+      height: 92px;
       margin: 0 auto 18px;
       display: grid;
       place-items: center;
       border-radius: 50%;
-      color: var(--gold-soft);
-      background: var(--navy);
-      box-shadow: 0 0 0 7px rgba(196,154,56,.14);
-      font: 700 35px Georgia, serif;
+      object-fit: cover;
+      background: var(--paper);
+      box-shadow: 0 0 0 7px rgba(197,165,106,.16);
     }
     h1, h2, h3, p { margin-top: 0; }
     h1 { margin-bottom: 8px; font: 700 clamp(2rem, 9vw, 3rem)/1.05 Georgia, serif; color: var(--navy); }
@@ -107,24 +107,51 @@
     .message { min-height: 21px; margin: 12px 0 0; font-size: .9rem; color: var(--danger); }
 
     .app-header {
-      color: white;
-      background: linear-gradient(135deg, var(--navy), var(--navy-2));
-      border-bottom: 4px solid var(--gold);
+      color: #fffdf8;
+      background:
+        linear-gradient(135deg, rgba(57,68,50,.97), rgba(82,91,70,.94)),
+        url('./assets/brand-mark-circle.png') 90% 40% / 460px no-repeat;
+      border-bottom: 3px solid var(--gold);
     }
     .header-inner, main, .footer-inner { width: min(100% - 32px, 940px); margin-inline: auto; }
     .header-inner { padding: max(22px, env(safe-area-inset-top)) 0 26px; }
-    .topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-mark { color: var(--gold-soft); font: 700 27px Georgia, serif; }
+    .brand-mark { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.65); }
     .brand strong { display: block; font-family: Georgia, serif; font-size: 1.18rem; }
     .brand small { color: #c8d8e3; }
     .pastora-link { padding: 7px 10px; border: 0; color: #dce8ef; background: transparent; font-size: .78rem; text-decoration: underline; text-underline-offset: 3px; }
+    .top-actions { display: flex; align-items: center; gap: 6px; }
+    .language-select {
+      min-height: 36px;
+      padding: 6px 28px 6px 9px;
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: 10px;
+      color: #fffdf8;
+      background: rgba(255,255,255,.10);
+      font-size: .78rem;
+    }
+    .language-select option { color: var(--ink); background: var(--paper); }
     .hero { padding-top: 32px; }
     .eyebrow { margin-bottom: 8px; color: var(--gold-soft); font-size: .75rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
     .hero h2 { margin-bottom: 9px; font: 700 clamp(1.8rem, 7vw, 2.8rem)/1.1 Georgia, serif; }
     .hero p { max-width: 580px; margin-bottom: 0; color: #d5e1e8; line-height: 1.6; }
 
     main { padding-block: 30px 56px; }
+    .journey-intro {
+      display: grid;
+      gap: 22px;
+      margin-bottom: 34px;
+      padding: 26px;
+      border: 1px solid rgba(197,165,106,.32);
+      border-radius: 24px;
+      background: rgba(255,253,248,.82);
+      box-shadow: 0 10px 32px rgba(75,64,47,.07);
+    }
+    .journey-copy h2 { margin-bottom: 9px; color: var(--navy); font: 700 clamp(1.55rem, 6vw, 2.15rem)/1.15 Georgia, serif; }
+    .journey-copy p { margin-bottom: 0; color: var(--muted); line-height: 1.65; }
+    .rhythm { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
+    .rhythm span { padding: 13px 10px; border-radius: 12px; color: var(--navy); background: #eee4ce; font-size: .85rem; font-weight: 800; text-align: center; }
     .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
     .section-heading h2 { margin: 0; color: var(--navy); font: 700 1.65rem Georgia, serif; }
     .section-heading span { color: var(--muted); font-size: .83rem; }
@@ -180,6 +207,10 @@
     .admin-actions .btn { flex: 1; }
     .progress { margin-top: 14px; color: var(--muted); font-size: .9rem; }
     .config-note { margin: -3px 0 18px; padding: 12px; border-radius: 10px; color: #684f11; background: #f9efcd; font-size: .82rem; line-height: 1.45; }
+    .about-section { margin-top: 42px; padding: 30px 24px; color: #fffdf8; background: var(--navy); border-radius: 24px; }
+    .about-section .eyebrow { color: var(--gold-soft); }
+    .about-section h2 { margin-bottom: 12px; font: 700 1.7rem Georgia, serif; }
+    .about-section p { max-width: 720px; margin-bottom: 0; color: #e7e3d9; line-height: 1.7; }
     footer { padding: 22px 0 calc(22px + env(safe-area-inset-bottom)); color: #d3dfe7; background: var(--navy); font-size: .82rem; text-align: center; }
 
     @media (min-width: 680px) {
@@ -187,21 +218,28 @@
       .audio-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .audio-card { padding: 24px; }
       .hero { padding-top: 42px; }
+      .journey-intro { grid-template-columns: 1.3fr .9fr; align-items: center; padding: 32px; }
+    }
+    @media (max-width: 520px) {
+      .topline { align-items: flex-start; }
+      .brand small { max-width: 150px; }
+      .top-actions { flex-direction: column; align-items: flex-end; }
+      .pastora-link { padding-right: 0; }
     }
   </style>
 </head>
 <body>
   <section id="loginView" class="login-view" aria-labelledby="loginTitle">
     <div class="login-card">
-      <div class="emblem" aria-hidden="true">C</div>
+      <img class="emblem" src="./assets/brand-mark-circle.png" alt="">
       <h1 id="loginTitle">Conociendo al Novio</h1>
-      <p class="subtitle">Um lugar reservado para ouvir, aprender e conhecer mais profundamente o coração do Noivo.</p>
+      <p class="subtitle" data-i18n="loginSubtitle">Una jornada de seis meses por el Nuevo Testamento para conocer más profundamente el corazón de Jesús.</p>
       <form id="loginForm">
         <div class="field">
-          <label for="groupPassword">Senha do grupo</label>
-          <input id="groupPassword" name="password" type="password" autocomplete="current-password" required placeholder="Digite a senha">
+          <label for="groupPassword" data-i18n="groupPassword">Contraseña del grupo</label>
+          <input id="groupPassword" name="password" type="password" autocomplete="current-password" required placeholder="Escribe la contraseña" data-i18n-placeholder="passwordPlaceholder">
         </div>
-        <button class="btn btn-primary btn-block" type="submit">Entrar nos estudos</button>
+        <button class="btn btn-primary btn-block" type="submit" data-i18n="enterJourney">Entrar en la jornada</button>
         <p id="loginMessage" class="message" role="alert" aria-live="polite"></p>
       </form>
     </div>
@@ -212,37 +250,62 @@
       <div class="header-inner">
         <div class="topline">
           <div class="brand">
-            <span class="brand-mark" aria-hidden="true">C</span>
-            <div><strong>Conociendo al Novio</strong><small>Estudos devocionais</small></div>
+            <img class="brand-mark" src="./assets/brand-mark-circle.png" alt="">
+            <div><strong>Conociendo al Novio</strong><small data-i18n="brandLine">Amigas del Novio · Abundante Vida Madrid</small></div>
           </div>
-          <button id="pastoraButton" class="pastora-link" type="button">Área da Pastora</button>
+          <div class="top-actions">
+            <select id="languageSelect" class="language-select" aria-label="Idioma">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+              <option value="pt-BR">Português</option>
+            </select>
+            <button id="pastoraButton" class="pastora-link" type="button" data-i18n="pastorArea">Área de la Pastora</button>
+          </div>
         </div>
         <div class="hero">
-          <p class="eyebrow">Uma jornada de intimidade</p>
-          <h2>Ouça. Medite. Aproxime-se.</h2>
-          <p>Capítulos em áudio para acompanhar você nos seus momentos de devoção e comunhão.</p>
+          <p class="eyebrow" data-i18n="heroEyebrow">Una jornada de intimidad</p>
+          <h2 data-i18n="heroTitle">No se trata solo de leer. Se trata de conocer al Novio.</h2>
+          <p data-i18n="heroBody">Seis meses caminando juntas por el Nuevo Testamento para reconocer Su voz, comprender Su corazón y parecernos más a Jesús.</p>
         </div>
       </div>
     </header>
 
     <main>
+      <section class="journey-intro" aria-labelledby="journeyTitle">
+        <div class="journey-copy">
+          <p class="eyebrow" data-i18n="todayEyebrow">Nuestro encuentro diario</p>
+          <h2 id="journeyTitle" data-i18n="journeyTitle">Hoy me encuentro con Él</h2>
+          <p data-i18n="journeyBody">Un momento sencillo para detenernos, abrir la Palabra y acercarnos a Jesús juntas.</p>
+        </div>
+        <div class="rhythm" aria-label="Ritmo de la jornada">
+          <span data-i18n="todayRead">Hoy leo</span>
+          <span data-i18n="todayListen">Hoy escucho</span>
+          <span data-i18n="todayMeditate">Hoy medito</span>
+          <span data-i18n="todayMeet">Hoy me encuentro con Él</span>
+        </div>
+      </section>
       <div class="section-heading">
-        <h2>Capítulos</h2>
+        <h2 data-i18n="chapters">Audios de la jornada</h2>
         <span id="episodeCount" aria-live="polite"></span>
       </div>
       <div id="audioList" class="audio-list" aria-live="polite">
-        <div class="state-card"><strong>Carregando os estudos…</strong>Aguarde um instante.</div>
+        <div class="state-card"><strong>Cargando la jornada…</strong>Espera un momento.</div>
       </div>
+      <section class="about-section" aria-labelledby="aboutTitle">
+        <p class="eyebrow" data-i18n="aboutEyebrow">Amigas del Novio</p>
+        <h2 id="aboutTitle" data-i18n="aboutTitle">Caminamos juntas para conocer más a Jesús</h2>
+        <p data-i18n="aboutBody">Somos una red de mujeres de Abundante Vida Madrid que ama Su presencia, desea escuchar Su voz y anhela que Él revele Su corazón. La comunidad existe para caminar juntas hacia Jesús, nuestro centro.</p>
+      </section>
     </main>
-    <footer><div class="footer-inner">Conociendo al Novio · Conteúdo reservado ao grupo</div></footer>
+    <footer><div class="footer-inner" data-i18n="footer">Una iniciativa de Amigas del Novio · Abundante Vida Madrid</div></footer>
   </div>
 
   <div id="adminAuthModal" class="modal-backdrop" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="adminAuthTitle">
-      <div class="modal-header"><h2 id="adminAuthTitle">Acesso da Pastora</h2><button class="close-btn" type="button" data-close="adminAuthModal" aria-label="Fechar">×</button></div>
+      <div class="modal-header"><h2 id="adminAuthTitle" data-i18n="pastorAccess">Acceso de la Pastora</h2><button class="close-btn" type="button" data-close="adminAuthModal" aria-label="Cerrar">×</button></div>
       <form id="adminAuthForm">
-        <div class="field"><label for="adminPassword">Senha administrativa</label><input id="adminPassword" type="password" autocomplete="current-password" required></div>
-        <button class="btn btn-primary btn-block" type="submit">Acessar painel</button>
+        <div class="field"><label for="adminPassword" data-i18n="adminPassword">Contraseña administrativa</label><input id="adminPassword" type="password" autocomplete="current-password" required></div>
+        <button class="btn btn-primary btn-block" type="submit" data-i18n="accessPanel">Acceder al panel</button>
         <p id="adminAuthMessage" class="message" role="alert" aria-live="polite"></p>
       </form>
     </section>
@@ -250,12 +313,12 @@
 
   <div id="adminModal" class="modal-backdrop" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
-      <div class="modal-header"><h2 id="adminTitle">Publicar novo capítulo</h2><button class="close-btn" type="button" data-close="adminModal" aria-label="Fechar">×</button></div>
-      <p id="configNote" class="config-note" hidden>Configure SUPABASE_URL e SUPABASE_KEY no início do script antes de publicar.</p>
+      <div class="modal-header"><h2 id="adminTitle" data-i18n="publishTitle">Publicar un nuevo audio</h2><button class="close-btn" type="button" data-close="adminModal" aria-label="Cerrar">×</button></div>
+      <p id="configNote" class="config-note" hidden data-i18n="configNote">Configura SUPABASE_URL y SUPABASE_KEY antes de publicar.</p>
       <form id="uploadForm">
-        <div class="field"><label for="chapterTitle">Título do capítulo</label><input id="chapterTitle" type="text" maxlength="140" required placeholder="Ex.: A voz do Noivo"></div>
-        <div class="field"><label for="audioFile">Arquivo de áudio (.mp3, .m4a ou .mp4)</label><input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,video/mp4,.mp3,.m4a,.mp4" required></div>
-        <div class="admin-actions"><button class="btn btn-ghost" type="button" data-close="adminModal">Cancelar</button><button id="publishButton" class="btn btn-gold" type="submit">Publicar Capítulo</button></div>
+        <div class="field"><label for="chapterTitle" data-i18n="audioTitle">Título del audio</label><input id="chapterTitle" type="text" maxlength="140" required placeholder="Ej.: La voz del Novio" data-i18n-placeholder="audioTitlePlaceholder"></div>
+        <div class="field"><label for="audioFile" data-i18n="audioFile">Archivo de audio (.mp3, .m4a o .mp4 · máximo 50 MB)</label><input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,video/mp4,.mp3,.m4a,.mp4" required></div>
+        <div class="admin-actions"><button class="btn btn-ghost" type="button" data-close="adminModal" data-i18n="cancel">Cancelar</button><button id="publishButton" class="btn btn-gold" type="submit" data-i18n="publish">Publicar audio</button></div>
         <p id="uploadProgress" class="progress" role="status" aria-live="polite"></p>
         <p id="uploadMessage" class="message" role="alert" aria-live="assertive"></p>
       </form>
@@ -273,6 +336,35 @@
     const STORAGE_BUCKET = 'audios-conociendo-al-novio';
     const TABLE_NAME = 'audios';
     const ACCESS_KEY = 'conociendo_access_granted';
+    const LANGUAGE_KEY = 'conociendo_language';
+
+    const translations = {
+      es: {
+        loginSubtitle: 'Una jornada de seis meses por el Nuevo Testamento para conocer más profundamente el corazón de Jesús.', groupPassword: 'Contraseña del grupo', passwordPlaceholder: 'Escribe la contraseña', enterJourney: 'Entrar en la jornada', brandLine: 'Amigas del Novio · Abundante Vida Madrid', pastorArea: 'Área de la Pastora', heroEyebrow: 'Una jornada de intimidad', heroTitle: 'No se trata solo de leer. Se trata de conocer al Novio.', heroBody: 'Seis meses caminando juntas por el Nuevo Testamento para reconocer Su voz, comprender Su corazón y parecernos más a Jesús.', todayEyebrow: 'Nuestro encuentro diario', journeyTitle: 'Hoy me encuentro con Él', journeyBody: 'Un momento sencillo para detenernos, abrir la Palabra y acercarnos a Jesús juntas.', todayRead: 'Hoy leo', todayListen: 'Hoy escucho', todayMeditate: 'Hoy medito', todayMeet: 'Hoy me encuentro con Él', chapters: 'Audios de la jornada', aboutEyebrow: 'Amigas del Novio', aboutTitle: 'Caminamos juntas para conocer más a Jesús', aboutBody: 'Somos una red de mujeres de Abundante Vida Madrid que ama Su presencia, desea escuchar Su voz y anhela que Él revele Su corazón. La comunidad existe para caminar juntas hacia Jesús, nuestro centro.', footer: 'Una iniciativa de Amigas del Novio · Abundante Vida Madrid', pastorAccess: 'Acceso de la Pastora', adminPassword: 'Contraseña administrativa', accessPanel: 'Acceder al panel', publishTitle: 'Publicar un nuevo audio', configNote: 'Configura SUPABASE_URL y SUPABASE_KEY antes de publicar.', audioTitle: 'Título del audio', audioTitlePlaceholder: 'Ej.: La voz del Novio', audioFile: 'Archivo de audio (.mp3, .m4a o .mp4 · máximo 50 MB)', cancel: 'Cancelar', publish: 'Publicar audio', wrongGroupPassword: 'Contraseña incorrecta. Inténtalo de nuevo.', loadingTitle: 'Cargando la jornada…', loadingBody: 'Espera un momento.', awaitingConfig: 'La aplicación espera la configuración.', addConfig: 'Añade la URL y la clave pública de Supabase para cargar los audios.', loadError: 'No fue posible cargar los audios.', connectionError: 'Comprueba tu conexión e inténtalo de nuevo.', retry: 'Intentar de nuevo', emptyTitle: 'Todavía no hay audios publicados.', emptyBody: 'El primer contenido de la jornada aparecerá aquí muy pronto.', episode: 'audio', episodes: 'audios', devotional: 'Audio de la jornada', wrongAdminPassword: 'Contraseña administrativa incorrecta.', invalidFile: 'Selecciona un archivo MP3, M4A o MP4 válido.', fileTooLarge: 'El archivo supera el límite de 50 MB. Comprímelo antes de publicarlo.', noConfig: 'Supabase aún no está configurado.', uploading: 'Enviando el audio…', registering: 'Registrando el contenido…', published: '¡Audio publicado correctamente!', whatsappQuestion: '¿Deseas avisar al grupo por WhatsApp ahora?', whatsappMessage: "¡Paz del Señor! El nuevo audio de 'Conociendo al Novio' ({title}) ya está disponible. Escúchalo aquí: {url}", mediaAlbum: 'Jornada devocional'
+      },
+      en: {
+        loginSubtitle: 'A six-month journey through the New Testament to know the heart of Jesus more deeply.', groupPassword: 'Group password', passwordPlaceholder: 'Enter the password', enterJourney: 'Enter the journey', brandLine: 'Friends of the Bridegroom · Abundant Life Madrid', pastorArea: "Pastor's area", heroEyebrow: 'A journey of intimacy', heroTitle: 'It is not only about reading. It is about knowing the Bridegroom.', heroBody: 'Six months walking together through the New Testament to recognize His voice, understand His heart, and become more like Jesus.', todayEyebrow: 'Our daily encounter', journeyTitle: 'Today I meet with Him', journeyBody: 'A simple moment to pause, open the Word, and draw near to Jesus together.', todayRead: 'Today I read', todayListen: 'Today I listen', todayMeditate: 'Today I meditate', todayMeet: 'Today I meet with Him', chapters: 'Journey audios', aboutEyebrow: 'Friends of the Bridegroom', aboutTitle: 'We walk together to know Jesus more', aboutBody: 'We are a network of women from Abundant Life Madrid who love His presence, desire to hear His voice, and long for Him to reveal His heart. Our community exists to walk together toward Jesus, our center.', footer: 'An initiative of Friends of the Bridegroom · Abundant Life Madrid', pastorAccess: "Pastor's access", adminPassword: 'Administrator password', accessPanel: 'Open panel', publishTitle: 'Publish a new audio', configNote: 'Configure SUPABASE_URL and SUPABASE_KEY before publishing.', audioTitle: 'Audio title', audioTitlePlaceholder: 'E.g. The voice of the Bridegroom', audioFile: 'Audio file (.mp3, .m4a or .mp4 · maximum 50 MB)', cancel: 'Cancel', publish: 'Publish audio', wrongGroupPassword: 'Incorrect password. Please try again.', loadingTitle: 'Loading the journey…', loadingBody: 'Please wait a moment.', awaitingConfig: 'The app is awaiting configuration.', addConfig: 'Add the Supabase URL and public key to load the audios.', loadError: 'The audios could not be loaded.', connectionError: 'Check your connection and try again.', retry: 'Try again', emptyTitle: 'No audios have been published yet.', emptyBody: 'The first journey content will appear here soon.', episode: 'audio', episodes: 'audios', devotional: 'Journey audio', wrongAdminPassword: 'Incorrect administrator password.', invalidFile: 'Choose a valid MP3, M4A, or MP4 file.', fileTooLarge: 'The file exceeds the 50 MB limit. Compress it before publishing.', noConfig: 'Supabase has not been configured yet.', uploading: 'Uploading the audio…', registering: 'Saving the content…', published: 'Audio published successfully!', whatsappQuestion: 'Would you like to notify the WhatsApp group now?', whatsappMessage: "Peace of the Lord! The new 'Knowing the Bridegroom' audio ({title}) is now available. Listen here: {url}", mediaAlbum: 'Devotional journey'
+      },
+      'pt-BR': {
+        loginSubtitle: 'Uma jornada de seis meses pelo Novo Testamento para conhecer mais profundamente o coração de Jesus.', groupPassword: 'Senha do grupo', passwordPlaceholder: 'Digite a senha', enterJourney: 'Entrar na jornada', brandLine: 'Amigas do Noivo · Abundante Vida Madrid', pastorArea: 'Área da Pastora', heroEyebrow: 'Uma jornada de intimidade', heroTitle: 'Não se trata apenas de ler. Trata-se de conhecer o Noivo.', heroBody: 'Seis meses caminhando juntas pelo Novo Testamento para reconhecer Sua voz, compreender Seu coração e nos tornar mais parecidas com Jesus.', todayEyebrow: 'Nosso encontro diário', journeyTitle: 'Hoje eu me encontro com Ele', journeyBody: 'Um momento simples para parar, abrir a Palavra e nos aproximarmos de Jesus juntas.', todayRead: 'Hoje eu leio', todayListen: 'Hoje eu ouço', todayMeditate: 'Hoje eu medito', todayMeet: 'Hoje eu me encontro com Ele', chapters: 'Áudios da jornada', aboutEyebrow: 'Amigas do Noivo', aboutTitle: 'Caminhamos juntas para conhecer mais a Jesus', aboutBody: 'Somos uma rede de mulheres da Abundante Vida Madrid que ama Sua presença, deseja ouvir Sua voz e anseia que Ele revele Seu coração. A comunidade existe para caminharmos juntas em direção a Jesus, nosso centro.', footer: 'Uma iniciativa de Amigas do Noivo · Abundante Vida Madrid', pastorAccess: 'Acesso da Pastora', adminPassword: 'Senha administrativa', accessPanel: 'Acessar painel', publishTitle: 'Publicar um novo áudio', configNote: 'Configure SUPABASE_URL e SUPABASE_KEY antes de publicar.', audioTitle: 'Título do áudio', audioTitlePlaceholder: 'Ex.: A voz do Noivo', audioFile: 'Arquivo de áudio (.mp3, .m4a ou .mp4 · máximo 50 MB)', cancel: 'Cancelar', publish: 'Publicar áudio', wrongGroupPassword: 'Senha incorreta. Tente novamente.', loadingTitle: 'Carregando a jornada…', loadingBody: 'Aguarde um instante.', awaitingConfig: 'O aplicativo aguarda configuração.', addConfig: 'Adicione a URL e a chave pública do Supabase para carregar os áudios.', loadError: 'Não foi possível carregar os áudios.', connectionError: 'Verifique sua conexão e tente novamente.', retry: 'Tentar novamente', emptyTitle: 'Ainda não há áudios publicados.', emptyBody: 'O primeiro conteúdo da jornada aparecerá aqui em breve.', episode: 'áudio', episodes: 'áudios', devotional: 'Áudio da jornada', wrongAdminPassword: 'Senha administrativa incorreta.', invalidFile: 'Selecione um arquivo MP3, M4A ou MP4 válido.', fileTooLarge: 'O arquivo ultrapassa o limite de 50 MB. Comprima-o antes de publicar.', noConfig: 'O Supabase ainda não foi configurado.', uploading: 'Enviando o áudio…', registering: 'Registrando o conteúdo…', published: 'Áudio publicado com sucesso!', whatsappQuestion: 'Deseja notificar o grupo no WhatsApp agora?', whatsappMessage: "Paz do Senhor! O novo áudio de 'Conhecendo o Noivo' ({title}) já está disponível. Ouça aqui: {url}", mediaAlbum: 'Jornada devocional'
+      }
+    };
+
+    let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || 'es';
+    if (!translations[currentLanguage]) currentLanguage = 'es';
+    const t = (key) => translations[currentLanguage][key] || translations.es[key] || key;
+
+    function applyLanguage(language) {
+      currentLanguage = translations[language] ? language : 'es';
+      localStorage.setItem(LANGUAGE_KEY, currentLanguage);
+      document.documentElement.lang = currentLanguage;
+      document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach((node) => { node.placeholder = t(node.dataset.i18nPlaceholder); });
+      const select = document.getElementById('languageSelect');
+      if (select) select.value = currentLanguage;
+      document.title = currentLanguage === 'en' ? 'Knowing the Bridegroom' : currentLanguage === 'pt-BR' ? 'Conhecendo o Noivo' : 'Conociendo al Novio';
+      if (episodes.length) renderAudios(episodes);
+    }
 
     const $ = (selector) => document.querySelector(selector);
     const loginView = $('#loginView');
@@ -306,7 +398,7 @@
         $('#loginMessage').textContent = '';
         showApp();
       } else {
-        $('#loginMessage').textContent = 'Senha incorreta. Tente novamente.';
+        $('#loginMessage').textContent = t('wrongGroupPassword');
         input.select();
       }
     });
@@ -318,17 +410,17 @@
     }
 
     function formatDate(value) {
-      if (!value) return 'Capítulo devocional';
+      if (!value) return t('devotional');
       const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return 'Capítulo devocional';
-      return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
+      if (Number.isNaN(date.getTime())) return t('devotional');
+      return new Intl.DateTimeFormat(currentLanguage, { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
     }
 
     function renderAudios(items) {
       episodes = items;
-      episodeCount.textContent = items.length ? `${items.length} ${items.length === 1 ? 'episódio' : 'episódios'}` : '';
+      episodeCount.textContent = items.length ? `${items.length} ${items.length === 1 ? t('episode') : t('episodes')}` : '';
       if (!items.length) {
-        audioList.innerHTML = '<div class="state-card"><strong>Ainda não há capítulos publicados.</strong>O primeiro estudo aparecerá aqui em breve.</div>';
+        audioList.innerHTML = `<div class="state-card"><strong>${t('emptyTitle')}</strong>${t('emptyBody')}</div>`;
         return;
       }
       audioList.innerHTML = items.map((item, index) => `
@@ -337,21 +429,21 @@
             <span class="chapter-number" aria-hidden="true">${items.length - index}</span>
             <div><h3>${escapeHtml(item.titulo)}</h3><time datetime="${escapeHtml(item.created_at || '')}">${formatDate(item.created_at)}</time></div>
           </div>
-          <audio controls preload="metadata" src="${escapeHtml(item.url)}" data-index="${index}" aria-label="Ouvir ${escapeHtml(item.titulo)}"></audio>
+          <audio controls preload="metadata" src="${escapeHtml(item.url)}" data-index="${index}" aria-label="${t('todayListen')}: ${escapeHtml(item.titulo)}"></audio>
         </article>`).join('');
       bindPlayers();
     }
 
     async function loadAudios() {
       if (!db && !initializeSupabase()) {
-        audioList.innerHTML = '<div class="state-card"><strong>Aplicativo aguardando configuração.</strong>Adicione a URL e a chave pública do Supabase para carregar os capítulos.</div>';
+        audioList.innerHTML = `<div class="state-card"><strong>${t('awaitingConfig')}</strong>${t('addConfig')}</div>`;
         return;
       }
-      audioList.innerHTML = '<div class="state-card"><strong>Carregando os estudos…</strong>Aguarde um instante.</div>';
+      audioList.innerHTML = `<div class="state-card"><strong>${t('loadingTitle')}</strong>${t('loadingBody')}</div>`;
       const { data, error } = await db.from(TABLE_NAME).select('id,titulo,url,created_at').order('created_at', { ascending: false });
       if (error) {
         console.error(error);
-        audioList.innerHTML = '<div class="state-card"><strong>Não foi possível carregar os capítulos.</strong>Verifique sua conexão e tente novamente.<br><button class="btn btn-ghost retry" type="button">Tentar novamente</button></div>';
+        audioList.innerHTML = `<div class="state-card"><strong>${t('loadError')}</strong>${t('connectionError')}<br><button class="btn btn-ghost retry" type="button">${t('retry')}</button></div>`;
         $('.retry').addEventListener('click', loadAudios);
         return;
       }
@@ -373,7 +465,7 @@
       navigator.mediaSession.metadata = new MediaMetadata({
         title: episode.titulo,
         artist: 'Conociendo al Novio',
-        album: 'Estudos devocionais'
+        album: t('mediaAlbum')
       });
       const actions = {
         play: () => player.play(),
@@ -416,7 +508,7 @@
     $('#adminAuthForm').addEventListener('submit', (event) => {
       event.preventDefault();
       if ($('#adminPassword').value !== ADMIN_PASSWORD) {
-        $('#adminAuthMessage').textContent = 'Senha administrativa incorreta.';
+        $('#adminAuthMessage').textContent = t('wrongAdminPassword');
         $('#adminPassword').select();
         return;
       }
@@ -448,16 +540,20 @@
       if (!title || !file) return;
       const allowed = ['audio/mpeg', 'audio/mp4', 'audio/x-m4a', 'video/mp4'];
       if (!allowed.includes(file.type) && !/\.(mp3|m4a|mp4)$/i.test(file.name)) {
-        message.textContent = 'Selecione um arquivo MP3, M4A ou MP4 válido.';
+        message.textContent = t('invalidFile');
+        return;
+      }
+      if (file.size > 50 * 1024 * 1024) {
+        message.textContent = t('fileTooLarge');
         return;
       }
       if (!db && !initializeSupabase()) {
-        message.textContent = 'O Supabase ainda não foi configurado.';
+        message.textContent = t('noConfig');
         return;
       }
 
       publishButton.disabled = true;
-      progress.textContent = 'Enviando o áudio…';
+      progress.textContent = t('uploading');
       const path = `capitulos/${safeFileName(file.name)}`;
       const { error: uploadError } = await db.storage.from(STORAGE_BUCKET).upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type || undefined });
       if (uploadError) {
@@ -469,7 +565,7 @@
       }
 
       const { data: publicData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(path);
-      progress.textContent = 'Registrando o capítulo…';
+      progress.textContent = t('registering');
       const { error: insertError } = await db.from(TABLE_NAME).insert({ titulo: title, url: publicData.publicUrl });
       if (insertError) {
         console.error(insertError);
@@ -480,12 +576,12 @@
         return;
       }
 
-      progress.textContent = 'Capítulo publicado com sucesso!';
+      progress.textContent = t('published');
       await loadAudios();
       closeModal('adminModal');
-      if (window.confirm('Deseja notificar o grupo no WhatsApp agora?')) {
+      if (window.confirm(t('whatsappQuestion'))) {
         const appUrl = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, '')}`;
-        const text = `Paz do Senhor! O novo episódio do estudo 'Conociendo al Novio' (${title}) já está disponível. Ouça aqui: ${appUrl}`;
+        const text = t('whatsappMessage').replace('{title}', title).replace('{url}', appUrl);
         window.location.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
       }
       publishButton.disabled = false;
@@ -495,6 +591,8 @@
       window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch((error) => console.warn('Service Worker:', error)));
     }
 
+    $('#languageSelect').addEventListener('change', (event) => applyLanguage(event.target.value));
+    applyLanguage(currentLanguage);
     if (localStorage.getItem(ACCESS_KEY) === 'true') showApp();
     initializeSupabase();
   </script>

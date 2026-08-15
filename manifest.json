@@ -1,21 +1,28 @@
 {
   "name": "Conociendo al Novio",
-  "short_name": "Conociendo",
-  "description": "Estudos devocionais em áudio para conhecer mais profundamente o coração do Noivo.",
+  "short_name": "Conociendo al Novio",
+  "description": "Una jornada de seis meses por el Nuevo Testamento para conocer más profundamente a Jesús.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "prefer_related_applications": false,
   "orientation": "portrait-primary",
-  "background_color": "#fbfaf6",
-  "theme_color": "#102a43",
-  "lang": "pt-BR",
+  "background_color": "#f7f2e8",
+  "theme_color": "#46513d",
+  "lang": "es",
   "categories": ["education", "lifestyle", "music"],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23102a43'/%3E%3Ccircle cx='256' cy='256' r='174' fill='none' stroke='%23c49a38' stroke-width='18'/%3E%3Ctext x='256' y='337' text-anchor='middle' font-family='Georgia,serif' font-size='250' font-weight='700' fill='%23f4e8bf'%3EC%3C/text%3E%3C/svg%3E",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

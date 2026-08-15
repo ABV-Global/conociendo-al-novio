@@ -152,6 +152,24 @@
     .journey-copy p { margin-bottom: 0; color: var(--muted); line-height: 1.65; }
     .rhythm { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
     .rhythm span { padding: 13px 10px; border-radius: 12px; color: var(--navy); background: #eee4ce; font-size: .85rem; font-weight: 800; text-align: center; }
+    .notification-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 34px;
+      padding: 18px 20px;
+      border: 1px solid rgba(70,81,61,.16);
+      border-radius: 18px;
+      background: #fffdf8;
+      box-shadow: 0 8px 26px rgba(75,64,47,.06);
+    }
+    .notification-copy { display: flex; align-items: flex-start; gap: 13px; }
+    .notification-icon { flex: 0 0 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: var(--navy); background: var(--gold-soft); font-size: 1.2rem; }
+    .notification-copy strong { display: block; margin: 1px 0 4px; color: var(--navy); }
+    .notification-copy p { margin: 0; color: var(--muted); font-size: .87rem; line-height: 1.45; }
+    .notification-button { flex: 0 0 auto; min-width: 165px; }
+    .notification-button.is-active { color: white; background: var(--success); }
     .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
     .section-heading h2 { margin: 0; color: var(--navy); font: 700 1.65rem Georgia, serif; }
     .section-heading span { color: var(--muted); font-size: .83rem; }
@@ -225,6 +243,8 @@
       .brand small { max-width: 150px; }
       .top-actions { flex-direction: column; align-items: flex-end; }
       .pastora-link { padding-right: 0; }
+      .notification-card { align-items: stretch; flex-direction: column; }
+      .notification-button { width: 100%; }
     }
   </style>
 </head>
@@ -284,6 +304,16 @@
           <span data-i18n="todayMeet">Hoy me encuentro con Él</span>
         </div>
       </section>
+      <section class="notification-card" aria-labelledby="notificationTitle">
+        <div class="notification-copy">
+          <span class="notification-icon" aria-hidden="true">●</span>
+          <div>
+            <strong id="notificationTitle" data-i18n="notificationTitle">No te pierdas ningún audio</strong>
+            <p id="notificationDescription" data-i18n="notificationDescription">Activa los avisos y te informaremos cuando haya un nuevo contenido.</p>
+          </div>
+        </div>
+        <button id="notificationButton" class="btn btn-primary notification-button" type="button" data-i18n="enableNotifications">Activar notificaciones</button>
+      </section>
       <div class="section-heading">
         <h2 data-i18n="chapters">Audios de la jornada</h2>
         <span id="episodeCount" aria-live="polite"></span>
@@ -337,6 +367,7 @@
     const TABLE_NAME = 'audios';
     const ACCESS_KEY = 'conociendo_access_granted';
     const LANGUAGE_KEY = 'conociendo_language';
+    const VAPID_PUBLIC_KEY = 'BNbS-edRZ7q3eBkTFoa4BzxgKpG16hEuJVe1qJq4WldgsVZ1RlOcILkaOLYoVwZb1F0piAj96AVNk3mdqqPn91I';
 
     const translations = {
       es: {
@@ -349,6 +380,16 @@
         loginSubtitle: 'Uma jornada de seis meses pelo Novo Testamento para conhecer mais profundamente o coração de Jesus.', groupPassword: 'Senha do grupo', passwordPlaceholder: 'Digite a senha', enterJourney: 'Entrar na jornada', brandLine: 'Amigas do Noivo · Abundante Vida Madrid', pastorArea: 'Área da Pastora', heroEyebrow: 'Uma jornada de intimidade', heroTitle: 'Não se trata apenas de ler. Trata-se de conhecer o Noivo.', heroBody: 'Seis meses caminhando juntas pelo Novo Testamento para reconhecer Sua voz, compreender Seu coração e nos tornar mais parecidas com Jesus.', todayEyebrow: 'Nosso encontro diário', journeyTitle: 'Hoje eu me encontro com Ele', journeyBody: 'Um momento simples para parar, abrir a Palavra e nos aproximarmos de Jesus juntas.', todayRead: 'Hoje eu leio', todayListen: 'Hoje eu ouço', todayMeditate: 'Hoje eu medito', todayMeet: 'Hoje eu me encontro com Ele', chapters: 'Áudios da jornada', aboutEyebrow: 'Amigas do Noivo', aboutTitle: 'Caminhamos juntas para conhecer mais a Jesus', aboutBody: 'Somos uma rede de mulheres da Abundante Vida Madrid que ama Sua presença, deseja ouvir Sua voz e anseia que Ele revele Seu coração. A comunidade existe para caminharmos juntas em direção a Jesus, nosso centro.', footer: 'Uma iniciativa de Amigas do Noivo · Abundante Vida Madrid', pastorAccess: 'Acesso da Pastora', adminPassword: 'Senha administrativa', accessPanel: 'Acessar painel', publishTitle: 'Publicar um novo áudio', configNote: 'Configure SUPABASE_URL e SUPABASE_KEY antes de publicar.', audioTitle: 'Título do áudio', audioTitlePlaceholder: 'Ex.: A voz do Noivo', audioFile: 'Arquivo de áudio (.mp3, .m4a ou .mp4 · máximo 50 MB)', cancel: 'Cancelar', publish: 'Publicar áudio', wrongGroupPassword: 'Senha incorreta. Tente novamente.', loadingTitle: 'Carregando a jornada…', loadingBody: 'Aguarde um instante.', awaitingConfig: 'O aplicativo aguarda configuração.', addConfig: 'Adicione a URL e a chave pública do Supabase para carregar os áudios.', loadError: 'Não foi possível carregar os áudios.', connectionError: 'Verifique sua conexão e tente novamente.', retry: 'Tentar novamente', emptyTitle: 'Ainda não há áudios publicados.', emptyBody: 'O primeiro conteúdo da jornada aparecerá aqui em breve.', episode: 'áudio', episodes: 'áudios', devotional: 'Áudio da jornada', wrongAdminPassword: 'Senha administrativa incorreta.', invalidFile: 'Selecione um arquivo MP3, M4A ou MP4 válido.', fileTooLarge: 'O arquivo ultrapassa o limite de 50 MB. Comprima-o antes de publicar.', noConfig: 'O Supabase ainda não foi configurado.', uploading: 'Enviando o áudio…', registering: 'Registrando o conteúdo…', published: 'Áudio publicado com sucesso!', whatsappQuestion: 'Deseja notificar o grupo no WhatsApp agora?', whatsappMessage: "Paz do Senhor! O novo áudio de 'Conhecendo o Noivo' ({title}) já está disponível. Ouça aqui: {url}", mediaAlbum: 'Jornada devocional'
       }
     };
+
+    Object.assign(translations.es, {
+      notificationTitle: 'No te pierdas ningún audio', notificationDescription: 'Activa los avisos y te informaremos cuando haya un nuevo contenido.', enableNotifications: 'Activar notificaciones', notificationsActive: 'Notificaciones activadas', notificationsBlocked: 'Las notificaciones están bloqueadas en los ajustes del dispositivo.', notificationsUnsupported: 'Este dispositivo no admite notificaciones. En iPhone, añade primero la app a la pantalla de inicio.', notificationError: 'No fue posible activar los avisos. Inténtalo de nuevo.'
+    });
+    Object.assign(translations.en, {
+      notificationTitle: 'Never miss a new audio', notificationDescription: 'Turn on alerts and we will let you know when new content is available.', enableNotifications: 'Enable notifications', notificationsActive: 'Notifications enabled', notificationsBlocked: 'Notifications are blocked in your device settings.', notificationsUnsupported: 'This device does not support notifications. On iPhone, add the app to your Home Screen first.', notificationError: 'Notifications could not be enabled. Please try again.'
+    });
+    Object.assign(translations['pt-BR'], {
+      notificationTitle: 'Não perca nenhum áudio', notificationDescription: 'Ative os avisos e informaremos quando houver um novo conteúdo.', enableNotifications: 'Ativar notificações', notificationsActive: 'Notificações ativadas', notificationsBlocked: 'As notificações estão bloqueadas nas configurações do aparelho.', notificationsUnsupported: 'Este aparelho não aceita notificações. No iPhone, adicione primeiro o app à Tela de Início.', notificationError: 'Não foi possível ativar os avisos. Tente novamente.'
+    });
 
     let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || 'es';
     if (!translations[currentLanguage]) currentLanguage = 'es';
@@ -364,6 +405,7 @@
       if (select) select.value = currentLanguage;
       document.title = currentLanguage === 'en' ? 'Knowing the Bridegroom' : currentLanguage === 'pt-BR' ? 'Conhecendo o Noivo' : 'Conociendo al Novio';
       if (episodes.length) renderAudios(episodes);
+      refreshNotificationState();
     }
 
     const $ = (selector) => document.querySelector(selector);
@@ -382,6 +424,81 @@
       if (!hasSupabaseConfig() || !window.supabase) return false;
       db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       return true;
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      return Uint8Array.from([...rawData].map((character) => character.charCodeAt(0)));
+    }
+
+    async function refreshNotificationState() {
+      const button = $('#notificationButton');
+      const description = $('#notificationDescription');
+      if (!button || !description) return;
+      button.classList.remove('is-active');
+      button.disabled = false;
+
+      if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+        button.textContent = t('enableNotifications');
+        description.textContent = t('notificationsUnsupported');
+        button.disabled = true;
+        return;
+      }
+      if (Notification.permission === 'denied') {
+        button.textContent = t('enableNotifications');
+        description.textContent = t('notificationsBlocked');
+        button.disabled = true;
+        return;
+      }
+      if (Notification.permission === 'granted') {
+        try {
+          const registration = await navigator.serviceWorker.ready;
+          const subscription = await registration.pushManager.getSubscription();
+          if (subscription) {
+            button.textContent = t('notificationsActive');
+            description.textContent = t('notificationDescription');
+            button.classList.add('is-active');
+            return;
+          }
+        } catch (_) {}
+      }
+      button.textContent = t('enableNotifications');
+      description.textContent = t('notificationDescription');
+    }
+
+    async function enableNotifications() {
+      const button = $('#notificationButton');
+      const description = $('#notificationDescription');
+      if (button.disabled) return;
+      button.disabled = true;
+      description.textContent = t('loadingBody');
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          await refreshNotificationState();
+          return;
+        }
+        if (!db && !initializeSupabase()) throw new Error('Supabase is not configured');
+        const registration = await navigator.serviceWorker.ready;
+        let subscription = await registration.pushManager.getSubscription();
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+          });
+        }
+        const { error } = await db.functions.invoke('register-push', {
+          body: { subscription: subscription.toJSON(), language: currentLanguage }
+        });
+        if (error) throw error;
+        await refreshNotificationState();
+      } catch (error) {
+        console.error('Push subscription:', error);
+        description.textContent = t('notificationError');
+        button.disabled = false;
+      }
     }
 
     function showApp() {
@@ -592,6 +709,7 @@
     }
 
     $('#languageSelect').addEventListener('change', (event) => applyLanguage(event.target.value));
+    $('#notificationButton').addEventListener('click', enableNotifications);
     applyLanguage(currentLanguage);
     if (localStorage.getItem(ACCESS_KEY) === 'true') showApp();
     initializeSupabase();

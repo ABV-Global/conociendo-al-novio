@@ -1,0 +1,6 @@
+[functions.register-push]
+verify_jwt = false
+
+[functions.notify-new-audio]
+verify_jwt = false
+

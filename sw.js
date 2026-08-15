@@ -1,4 +1,4 @@
-const CACHE_NAME = 'conociendo-al-novio-v4';
+const CACHE_NAME = 'conociendo-al-novio-v5';
 const APP_SHELL = ['./', './index.html', './manifest.json', './assets/brand-mark-circle.png', './assets/icon-192.png', './assets/icon-512.png'];
 
 self.addEventListener('install', (event) => {
@@ -31,5 +31,36 @@ self.addEventListener('fetch', (event) => {
       }
       return response;
     }))
+  );
+});
+
+self.addEventListener('push', (event) => {
+  let payload = {};
+  try { payload = event.data?.json() || {}; } catch (_) { payload = { body: event.data?.text() }; }
+  const title = payload.title || 'Conociendo al Novio';
+  const options = {
+    body: payload.body || 'Hay un nuevo audio disponible.',
+    icon: './assets/icon-192.png',
+    badge: './assets/icon-192.png',
+    tag: payload.tag || 'nuevo-audio',
+    renotify: true,
+    data: { url: payload.url || './' }
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const destination = new URL(event.notification.data?.url || './', self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(async (clients) => {
+      for (const client of clients) {
+        if ('focus' in client) {
+          if ('navigate' in client) await client.navigate(destination);
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow ? self.clients.openWindow(destination) : undefined;
+    })
   );
 });

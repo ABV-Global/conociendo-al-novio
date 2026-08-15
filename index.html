@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="Estudos devocionais em áudio — Conociendo al Novio.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Conociendo">
+  <link rel="manifest" href="./manifest.json">
+  <title>Conociendo al Novio</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #102a43;
+      --navy-2: #173f5f;
+      --blue: #2f6f9f;
+      --gold: #c49a38;
+      --gold-soft: #f4e8bf;
+      --paper: #fbfaf6;
+      --white: #ffffff;
+      --ink: #172b3a;
+      --muted: #647482;
+      --danger: #a33a3a;
+      --success: #237653;
+      --border: rgba(16, 42, 67, .12);
+      --shadow: 0 14px 40px rgba(16, 42, 67, .10);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 90% 0%, rgba(196,154,56,.16), transparent 28rem),
+        linear-gradient(180deg, #eef5f8 0, var(--paper) 28rem);
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, audio:focus-visible {
+      outline: 3px solid rgba(47,111,159,.35);
+      outline-offset: 2px;
+    }
+    [hidden] { display: none !important; }
+
+    .login-view {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .login-card {
+      width: min(100%, 430px);
+      padding: 34px 26px;
+      text-align: center;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(196,154,56,.28);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .emblem {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--gold-soft);
+      background: var(--navy);
+      box-shadow: 0 0 0 7px rgba(196,154,56,.14);
+      font: 700 35px Georgia, serif;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 8px; font: 700 clamp(2rem, 9vw, 3rem)/1.05 Georgia, serif; color: var(--navy); }
+    .subtitle { margin-bottom: 28px; color: var(--muted); line-height: 1.55; }
+    .field { display: grid; gap: 8px; margin-bottom: 16px; text-align: left; }
+    .field label { font-size: .88rem; font-weight: 700; color: var(--navy); }
+    .field input {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 14px;
+      border: 1px solid #cbd7df;
+      border-radius: 12px;
+      color: var(--ink);
+      background: var(--white);
+    }
+    .btn {
+      min-height: 48px;
+      padding: 11px 18px;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 800;
+      transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { cursor: not-allowed; opacity: .58; transform: none; }
+    .btn-primary { color: white; background: var(--navy); box-shadow: 0 8px 20px rgba(16,42,67,.18); }
+    .btn-gold { color: #182532; background: var(--gold); }
+    .btn-ghost { color: var(--navy); background: transparent; border: 1px solid var(--border); }
+    .btn-block { width: 100%; }
+    .message { min-height: 21px; margin: 12px 0 0; font-size: .9rem; color: var(--danger); }
+
+    .app-header {
+      color: white;
+      background: linear-gradient(135deg, var(--navy), var(--navy-2));
+      border-bottom: 4px solid var(--gold);
+    }
+    .header-inner, main, .footer-inner { width: min(100% - 32px, 940px); margin-inline: auto; }
+    .header-inner { padding: max(22px, env(safe-area-inset-top)) 0 26px; }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { color: var(--gold-soft); font: 700 27px Georgia, serif; }
+    .brand strong { display: block; font-family: Georgia, serif; font-size: 1.18rem; }
+    .brand small { color: #c8d8e3; }
+    .pastora-link { padding: 7px 10px; border: 0; color: #dce8ef; background: transparent; font-size: .78rem; text-decoration: underline; text-underline-offset: 3px; }
+    .hero { padding-top: 32px; }
+    .eyebrow { margin-bottom: 8px; color: var(--gold-soft); font-size: .75rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    .hero h2 { margin-bottom: 9px; font: 700 clamp(1.8rem, 7vw, 2.8rem)/1.1 Georgia, serif; }
+    .hero p { max-width: 580px; margin-bottom: 0; color: #d5e1e8; line-height: 1.6; }
+
+    main { padding-block: 30px 56px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .section-heading h2 { margin: 0; color: var(--navy); font: 700 1.65rem Georgia, serif; }
+    .section-heading span { color: var(--muted); font-size: .83rem; }
+    .audio-list { display: grid; gap: 16px; }
+    .audio-card {
+      padding: 20px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 28px rgba(16,42,67,.07);
+    }
+    .card-meta { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .chapter-number {
+      flex: 0 0 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--navy);
+      background: var(--gold-soft);
+      font-weight: 900;
+    }
+    .audio-card h3 { margin: 2px 0 5px; color: var(--navy); font: 700 1.15rem/1.3 Georgia, serif; }
+    .audio-card time { color: var(--muted); font-size: .8rem; }
+    audio { width: 100%; height: 42px; display: block; }
+    .state-card { padding: 36px 22px; text-align: center; color: var(--muted); background: rgba(255,255,255,.7); border: 1px dashed #bccbd5; border-radius: var(--radius); }
+    .state-card strong { display: block; margin-bottom: 6px; color: var(--navy); }
+    .retry { margin-top: 14px; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(7, 23, 36, .72);
+      backdrop-filter: blur(5px);
+    }
+    .modal {
+      width: min(100%, 530px);
+      max-height: min(90vh, 760px);
+      overflow: auto;
+      padding: 25px;
+      background: var(--paper);
+      border-radius: 22px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+    }
+    .modal-header { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 22px; }
+    .modal-header h2 { margin: 0; color: var(--navy); font: 700 1.55rem Georgia, serif; }
+    .close-btn { width: 38px; height: 38px; border: 0; border-radius: 50%; color: var(--navy); background: #e7eef2; font-size: 1.25rem; }
+    .admin-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .admin-actions .btn { flex: 1; }
+    .progress { margin-top: 14px; color: var(--muted); font-size: .9rem; }
+    .config-note { margin: -3px 0 18px; padding: 12px; border-radius: 10px; color: #684f11; background: #f9efcd; font-size: .82rem; line-height: 1.45; }
+    footer { padding: 22px 0 calc(22px + env(safe-area-inset-bottom)); color: #d3dfe7; background: var(--navy); font-size: .82rem; text-align: center; }
+
+    @media (min-width: 680px) {
+      .header-inner, main, .footer-inner { width: min(100% - 64px, 940px); }
+      .audio-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .audio-card { padding: 24px; }
+      .hero { padding-top: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <section id="loginView" class="login-view" aria-labelledby="loginTitle">
+    <div class="login-card">
+      <div class="emblem" aria-hidden="true">C</div>
+      <h1 id="loginTitle">Conociendo al Novio</h1>
+      <p class="subtitle">Um lugar reservado para ouvir, aprender e conhecer mais profundamente o coração do Noivo.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="groupPassword">Senha do grupo</label>
+          <input id="groupPassword" name="password" type="password" autocomplete="current-password" required placeholder="Digite a senha">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Entrar nos estudos</button>
+        <p id="loginMessage" class="message" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <div id="appView" hidden>
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="topline">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true">C</span>
+            <div><strong>Conociendo al Novio</strong><small>Estudos devocionais</small></div>
+          </div>
+          <button id="pastoraButton" class="pastora-link" type="button">Área da Pastora</button>
+        </div>
+        <div class="hero">
+          <p class="eyebrow">Uma jornada de intimidade</p>
+          <h2>Ouça. Medite. Aproxime-se.</h2>
+          <p>Capítulos em áudio para acompanhar você nos seus momentos de devoção e comunhão.</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="section-heading">
+        <h2>Capítulos</h2>
+        <span id="episodeCount" aria-live="polite"></span>
+      </div>
+      <div id="audioList" class="audio-list" aria-live="polite">
+        <div class="state-card"><strong>Carregando os estudos…</strong>Aguarde um instante.</div>
+      </div>
+    </main>
+    <footer><div class="footer-inner">Conociendo al Novio · Conteúdo reservado ao grupo</div></footer>
+  </div>
+
+  <div id="adminAuthModal" class="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="adminAuthTitle">
+      <div class="modal-header"><h2 id="adminAuthTitle">Acesso da Pastora</h2><button class="close-btn" type="button" data-close="adminAuthModal" aria-label="Fechar">×</button></div>
+      <form id="adminAuthForm">
+        <div class="field"><label for="adminPassword">Senha administrativa</label><input id="adminPassword" type="password" autocomplete="current-password" required></div>
+        <button class="btn btn-primary btn-block" type="submit">Acessar painel</button>
+        <p id="adminAuthMessage" class="message" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
+
+  <div id="adminModal" class="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+      <div class="modal-header"><h2 id="adminTitle">Publicar novo capítulo</h2><button class="close-btn" type="button" data-close="adminModal" aria-label="Fechar">×</button></div>
+      <p id="configNote" class="config-note" hidden>Configure SUPABASE_URL e SUPABASE_KEY no início do script antes de publicar.</p>
+      <form id="uploadForm">
+        <div class="field"><label for="chapterTitle">Título do capítulo</label><input id="chapterTitle" type="text" maxlength="140" required placeholder="Ex.: A voz do Noivo"></div>
+        <div class="field"><label for="audioFile">Arquivo de áudio (.mp3, .m4a ou .mp4)</label><input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,video/mp4,.mp3,.m4a,.mp4" required></div>
+        <div class="admin-actions"><button class="btn btn-ghost" type="button" data-close="adminModal">Cancelar</button><button id="publishButton" class="btn btn-gold" type="submit">Publicar Capítulo</button></div>
+        <p id="uploadProgress" class="progress" role="status" aria-live="polite"></p>
+        <p id="uploadMessage" class="message" role="alert" aria-live="assertive"></p>
+      </form>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Configuração pública do Supabase. Cole aqui os dados de Project Settings > API.
+    const SUPABASE_URL = 'https://mgcwbggaowehwhjizkog.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_2m5crUGV89npNXP-WFJATQ_s1ke26Cp';
+
+    const GROUP_PASSWORD = 'novio2026';
+    const ADMIN_PASSWORD = 'pastora123';
+    const STORAGE_BUCKET = 'audios-conociendo-al-novio';
+    const TABLE_NAME = 'audios';
+    const ACCESS_KEY = 'conociendo_access_granted';
+
+    const $ = (selector) => document.querySelector(selector);
+    const loginView = $('#loginView');
+    const appView = $('#appView');
+    const audioList = $('#audioList');
+    const episodeCount = $('#episodeCount');
+    let episodes = [];
+    let db = null;
+
+    function hasSupabaseConfig() {
+      return /^https:\/\/.+\.supabase\.co$/.test(SUPABASE_URL) && SUPABASE_KEY.length > 40;
+    }
+
+    function initializeSupabase() {
+      if (!hasSupabaseConfig() || !window.supabase) return false;
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      return true;
+    }
+
+    function showApp() {
+      loginView.hidden = true;
+      appView.hidden = false;
+      loadAudios();
+    }
+
+    $('#loginForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const input = $('#groupPassword');
+      if (input.value === GROUP_PASSWORD) {
+        localStorage.setItem(ACCESS_KEY, 'true');
+        $('#loginMessage').textContent = '';
+        showApp();
+      } else {
+        $('#loginMessage').textContent = 'Senha incorreta. Tente novamente.';
+        input.select();
+      }
+    });
+
+    function escapeHtml(value) {
+      const node = document.createElement('div');
+      node.textContent = String(value ?? '');
+      return node.innerHTML;
+    }
+
+    function formatDate(value) {
+      if (!value) return 'Capítulo devocional';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return 'Capítulo devocional';
+      return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
+    }
+
+    function renderAudios(items) {
+      episodes = items;
+      episodeCount.textContent = items.length ? `${items.length} ${items.length === 1 ? 'episódio' : 'episódios'}` : '';
+      if (!items.length) {
+        audioList.innerHTML = '<div class="state-card"><strong>Ainda não há capítulos publicados.</strong>O primeiro estudo aparecerá aqui em breve.</div>';
+        return;
+      }
+      audioList.innerHTML = items.map((item, index) => `
+        <article class="audio-card">
+          <div class="card-meta">
+            <span class="chapter-number" aria-hidden="true">${items.length - index}</span>
+            <div><h3>${escapeHtml(item.titulo)}</h3><time datetime="${escapeHtml(item.created_at || '')}">${formatDate(item.created_at)}</time></div>
+          </div>
+          <audio controls preload="metadata" src="${escapeHtml(item.url)}" data-index="${index}" aria-label="Ouvir ${escapeHtml(item.titulo)}"></audio>
+        </article>`).join('');
+      bindPlayers();
+    }
+
+    async function loadAudios() {
+      if (!db && !initializeSupabase()) {
+        audioList.innerHTML = '<div class="state-card"><strong>Aplicativo aguardando configuração.</strong>Adicione a URL e a chave pública do Supabase para carregar os capítulos.</div>';
+        return;
+      }
+      audioList.innerHTML = '<div class="state-card"><strong>Carregando os estudos…</strong>Aguarde um instante.</div>';
+      const { data, error } = await db.from(TABLE_NAME).select('id,titulo,url,created_at').order('created_at', { ascending: false });
+      if (error) {
+        console.error(error);
+        audioList.innerHTML = '<div class="state-card"><strong>Não foi possível carregar os capítulos.</strong>Verifique sua conexão e tente novamente.<br><button class="btn btn-ghost retry" type="button">Tentar novamente</button></div>';
+        $('.retry').addEventListener('click', loadAudios);
+        return;
+      }
+      renderAudios(data || []);
+    }
+
+    function bindPlayers() {
+      document.querySelectorAll('audio').forEach((player) => {
+        player.addEventListener('play', () => {
+          document.querySelectorAll('audio').forEach((other) => { if (other !== player) other.pause(); });
+          updateMediaSession(player);
+        });
+      });
+    }
+
+    function updateMediaSession(player) {
+      if (!('mediaSession' in navigator)) return;
+      const episode = episodes[Number(player.dataset.index)];
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: episode.titulo,
+        artist: 'Conociendo al Novio',
+        album: 'Estudos devocionais'
+      });
+      const actions = {
+        play: () => player.play(),
+        pause: () => player.pause(),
+        seekbackward: (details) => { player.currentTime = Math.max(0, player.currentTime - (details.seekOffset || 10)); },
+        seekforward: (details) => { player.currentTime = Math.min(player.duration || Infinity, player.currentTime + (details.seekOffset || 10)); },
+        seekto: (details) => { if (details.seekTime != null) player.currentTime = details.seekTime; }
+      };
+      Object.entries(actions).forEach(([action, handler]) => {
+        try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
+      });
+    }
+
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => modal.querySelector('input, button')?.focus(), 0);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    $('#pastoraButton').addEventListener('click', () => {
+      $('#adminPassword').value = '';
+      $('#adminAuthMessage').textContent = '';
+      openModal('adminAuthModal');
+    });
+
+    document.querySelectorAll('[data-close]').forEach((button) => button.addEventListener('click', () => closeModal(button.dataset.close)));
+    document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.addEventListener('click', (event) => {
+      if (event.target === backdrop) closeModal(backdrop.id);
+    }));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') document.querySelectorAll('.modal-backdrop:not([hidden])').forEach((modal) => closeModal(modal.id));
+    });
+
+    $('#adminAuthForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      if ($('#adminPassword').value !== ADMIN_PASSWORD) {
+        $('#adminAuthMessage').textContent = 'Senha administrativa incorreta.';
+        $('#adminPassword').select();
+        return;
+      }
+      closeModal('adminAuthModal');
+      $('#uploadForm').reset();
+      $('#uploadMessage').textContent = '';
+      $('#uploadProgress').textContent = '';
+      $('#configNote').hidden = hasSupabaseConfig();
+      $('#publishButton').disabled = !hasSupabaseConfig();
+      openModal('adminModal');
+    });
+
+    function safeFileName(fileName) {
+      const extensionMatch = fileName.toLowerCase().match(/\.(mp3|m4a|mp4)$/);
+      const extension = extensionMatch ? `.${extensionMatch[1]}` : '.mp3';
+      const base = fileName.replace(/\.[^.]+$/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'audio';
+      return `${Date.now()}-${base}${extension}`;
+    }
+
+    $('#uploadForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const title = $('#chapterTitle').value.trim();
+      const file = $('#audioFile').files[0];
+      const publishButton = $('#publishButton');
+      const progress = $('#uploadProgress');
+      const message = $('#uploadMessage');
+      message.textContent = '';
+
+      if (!title || !file) return;
+      const allowed = ['audio/mpeg', 'audio/mp4', 'audio/x-m4a', 'video/mp4'];
+      if (!allowed.includes(file.type) && !/\.(mp3|m4a|mp4)$/i.test(file.name)) {
+        message.textContent = 'Selecione um arquivo MP3, M4A ou MP4 válido.';
+        return;
+      }
+      if (!db && !initializeSupabase()) {
+        message.textContent = 'O Supabase ainda não foi configurado.';
+        return;
+      }
+
+      publishButton.disabled = true;
+      progress.textContent = 'Enviando o áudio…';
+      const path = `capitulos/${safeFileName(file.name)}`;
+      const { error: uploadError } = await db.storage.from(STORAGE_BUCKET).upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type || undefined });
+      if (uploadError) {
+        console.error(uploadError);
+        message.textContent = `Falha no envio: ${uploadError.message}`;
+        progress.textContent = '';
+        publishButton.disabled = false;
+        return;
+      }
+
+      const { data: publicData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+      progress.textContent = 'Registrando o capítulo…';
+      const { error: insertError } = await db.from(TABLE_NAME).insert({ titulo: title, url: publicData.publicUrl });
+      if (insertError) {
+        console.error(insertError);
+        await db.storage.from(STORAGE_BUCKET).remove([path]);
+        message.textContent = `O áudio não foi publicado: ${insertError.message}`;
+        progress.textContent = '';
+        publishButton.disabled = false;
+        return;
+      }
+
+      progress.textContent = 'Capítulo publicado com sucesso!';
+      await loadAudios();
+      closeModal('adminModal');
+      if (window.confirm('Deseja notificar o grupo no WhatsApp agora?')) {
+        const appUrl = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, '')}`;
+        const text = `Paz do Senhor! O novo episódio do estudo 'Conociendo al Novio' (${title}) já está disponível. Ouça aqui: ${appUrl}`;
+        window.location.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      }
+      publishButton.disabled = false;
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch((error) => console.warn('Service Worker:', error)));
+    }
+
+    if (localStorage.getItem(ACCESS_KEY) === 'true') showApp();
+    initializeSupabase();
+  </script>
+</body>
+</html>

@@ -230,10 +230,26 @@ input:focus, select:focus, textarea:focus, .language-select:focus {
 .category-browser { margin: 17px 0 24px; padding: 17px; border-radius: 18px; }
 .category-chip { color: var(--text-primary); background: rgba(255,255,255,.72); border-color: var(--border-soft); }
 .category-chip:hover, .category-chip.active { color: #fff; background: linear-gradient(135deg, #a8730e, #d8ad45); border-color: transparent; }
-.audio-list { gap: 20px; }
+.audio-list { grid-template-columns: 1fr; gap: 20px; }
 .audio-card { position: relative; padding: 24px; border-radius: 20px; transition: transform var(--transition), box-shadow var(--transition); }
 .audio-card::before { content: ""; position: absolute; inset: 0 auto auto 24px; width: 54px; height: 2px; background: linear-gradient(90deg, var(--gold-primary), transparent); }
 .audio-card:hover { transform: translateY(-3px); box-shadow: 0 18px 48px rgba(79,57,21,.11); }
+.podcast-card { display: block; }
+.podcast-body { min-width: 0; }
+.podcast-body h3 { margin: 0 0 4px; font-family: var(--font-display); font-size: clamp(1.35rem,2.2vw,1.85rem); line-height: 1.15; }
+.podcast-brand { display: block; margin-bottom: 13px; color: #8a671d; font-size: .88rem; font-weight: 750; }
+.podcast-description-wrap { margin-bottom: 13px; }
+.podcast-description { display: block; margin: 0; overflow: hidden; color: var(--text-secondary); line-height: 1.55; white-space: nowrap; text-overflow: ellipsis; }
+.podcast-description.is-expanded { overflow: visible; white-space: pre-wrap; text-overflow: clip; }
+.description-toggle { margin-top: 5px; padding: 0; color: #805b0d; background: none; border: 0; font-weight: 800; }
+.podcast-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-bottom: 15px; color: var(--text-muted); font-size: .8rem; }
+.podcast-meta .category-path { margin-top: 0; }
+.podcast-controls { display: grid; grid-template-columns: 48px auto minmax(120px,1fr); align-items: center; gap: 12px; }
+.podcast-play { width: 48px; height: 48px; display: grid; place-items: center; padding: 0 0 0 2px; color: #fff; background: linear-gradient(135deg,#17120a,#4a3510); border: 2px solid #d0a02c; border-radius: 50%; box-shadow: 0 8px 20px rgba(76,51,8,.18); font-size: 1rem; }
+.podcast-play:hover { transform: scale(1.04); }
+.podcast-current { min-width: 34px; color: var(--text-secondary); font-size: .78rem; font-variant-numeric: tabular-nums; }
+.podcast-progress { width: 100%; min-height: auto; padding: 0; accent-color: var(--gold-primary); background: transparent; border: 0; box-shadow: none; }
+.podcast-card audio { display: none; }
 .number { color: #76530c; background: linear-gradient(135deg, #f5e8bd, #e7c967); }
 .audio-meta { color: var(--text-muted); }
 audio { border-radius: 999px; }
@@ -289,6 +305,8 @@ footer { color: var(--text-secondary); background: rgba(255,250,241,.85); border
 .upload-grid .fieldset { min-height: 100%; padding: 10px 13px; }
 .upload-grid .radio-row { gap: 9px 15px; }
 .upload-panel .admin-actions { margin-top: 0; }
+.audio-description-field { margin: 0; }
+.audio-description-field textarea { width: 100%; min-height: 104px; resize: vertical; line-height: 1.5; }
 .field label, .fieldset legend { color: var(--text-secondary); font-size: .78rem; letter-spacing: .02em; }
 .fieldset { border-color: var(--border-soft); border-radius: 14px; }
 .radio-row label { border-radius: 10px; }
@@ -339,6 +357,7 @@ footer { color: var(--text-secondary); background: rgba(255,250,241,.85); border
   .notification-card { margin-bottom: 38px; padding: 20px; }
   .section-heading { align-items: flex-end; }
   .audio-card { padding: 21px 18px; }
+  .podcast-controls { grid-column: 1/-1; }
   .about-section { padding: 27px 22px; }
   .admin-header { padding: 8px 0; }
   .admin-header .shell { width: calc(100% - 16px); min-height: 80px; padding: 6px 10px; border-radius: 16px; }
@@ -364,6 +383,11 @@ footer { color: var(--text-secondary); background: rgba(255,250,241,.85); border
   .brand-divider { margin-top: 0; }
   .login-form-panel { padding: 27px 22px 30px; }
   .login-card h1 { font-size: 2.45rem; }
+  .podcast-body h3 { font-size: 1.2rem; }
+  .podcast-brand { margin-bottom: 9px; font-size: .76rem; }
+  .podcast-description-wrap { grid-column: 1/-1; }
+  .podcast-controls { grid-template-columns: 44px auto minmax(80px,1fr); gap: 9px; }
+  .podcast-play { width: 44px; height: 44px; }
   .project-name { display: none; }
   .hero-media img { min-height: 218px; object-fit: cover; object-position: 58% center; }
   .rhythm { grid-template-columns: 1fr; }

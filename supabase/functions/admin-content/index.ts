@@ -149,7 +149,7 @@ Deno.serve(async (request) => {
     if (action === 'list-admin') {
       const [categoryResult, audioResult, journeyResult, announcementResult] = await Promise.all([
         supabase.from('categories').select('id,name,name_es,name_en,name_pt_br,slug,parent_id,sort_order').order('sort_order').order('name'),
-        supabase.from('audios').select('id,titulo,url,storage_path,category_id,status,scheduled_at,published_at,created_at').order('created_at', { ascending: false }),
+        supabase.from('audios').select('id,titulo,descricao,url,storage_path,category_id,status,scheduled_at,published_at,created_at').order('created_at', { ascending: false }),
         supabase.from('journey_settings').select('started_at').eq('id', 1).maybeSingle(),
         supabase.from('community_announcements').select('message,created_at').eq('is_current', true).order('created_at', { ascending: false }).limit(1).maybeSingle()
       ]);
@@ -187,10 +187,11 @@ Deno.serve(async (request) => {
 
     if (action === 'save-audio') {
       const title = String(body.title || '').trim().slice(0, 140);
+      const description = String(body.description || '').trim().slice(0, 1500);
       const categoryId = Number(body.categoryId);
       const mode = body.mode === 'scheduled' ? 'scheduled' : 'published';
       const scheduledAt = mode === 'scheduled' ? new Date(body.scheduledAt) : null;
-      if (!title || !categoryId || !body.url || !body.storagePath) {
+      if (!title || !description || !categoryId || !body.url || !body.storagePath) {
         return new Response(JSON.stringify({ error: 'Missing audio information' }), { status: 400, headers });
       }
       if (mode === 'scheduled' && (!scheduledAt || Number.isNaN(scheduledAt.getTime()) || scheduledAt.getTime() <= Date.now())) {
@@ -198,6 +199,7 @@ Deno.serve(async (request) => {
       }
       const record = {
         titulo: title,
+        descricao: description,
         url: String(body.url),
         storage_path: String(body.storagePath),
         category_id: categoryId,

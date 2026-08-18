@@ -1,4 +1,4 @@
-const CACHE_NAME = 'conociendo-al-novio-v18';
+const CACHE_NAME = 'conociendo-al-novio-v19';
 const APP_SHELL = ['./', './index.html', './styles.css?v=18', './app.js', './manifest.json', './assets/amigas-del-novio-black-transparent-v4.png', './assets/amigas-del-novio-background-v1.png', './assets/amigas-del-novio-hero-v2.png', './assets/amigas-del-novio-hero-wide-v3.png', './assets/icon-192-v6.png', './assets/icon-512-v6.png'];
 
 self.addEventListener('install', (event) => {

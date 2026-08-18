@@ -22,7 +22,12 @@ Deno.serve(async (request) => {
 
   try {
     const payload = await request.json();
-    if (payload?.type !== 'INSERT' || payload?.table !== 'audios' || !payload?.record?.titulo) {
+    const isImmediatePublication = payload?.type === 'INSERT' && payload?.record?.status === 'published';
+    const isScheduledPublication = payload?.type === 'UPDATE'
+      && payload?.old_record?.status !== 'published'
+      && payload?.record?.status === 'published';
+    if (payload?.table !== 'audios' || !payload?.record?.titulo
+      || payload?.record?.notification_sent_at || (!isImmediatePublication && !isScheduledPublication)) {
       return Response.json({ ignored: true });
     }
 
@@ -66,10 +71,10 @@ Deno.serve(async (request) => {
     if (invalidEndpoints.length) {
       await supabase.from('push_subscriptions').delete().in('endpoint', invalidEndpoints);
     }
+    await supabase.from('audios').update({ notification_sent_at: new Date().toISOString() }).eq('id', payload.record.id);
     return Response.json({ sent, removed: invalidEndpoints.length });
   } catch (error) {
     console.error(error);
     return Response.json({ error: 'Unable to send notifications' }, { status: 500 });
   }
 });
-

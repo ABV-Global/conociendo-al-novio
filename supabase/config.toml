@@ -4,3 +4,5 @@ verify_jwt = false
 [functions.notify-new-audio]
 verify_jwt = false
 
+[functions.admin-content]
+verify_jwt = false

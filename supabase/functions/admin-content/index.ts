@@ -33,8 +33,34 @@ function safeFileName(value: string) {
 }
 
 async function translateCategory(nameEs: string) {
+  const normalized = nameEs.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  const glossary: Record<string, { nameEn: string; namePtBr: string }> = {
+    biblia: { nameEn: 'Bible', namePtBr: 'Bíblia' },
+    libros: { nameEn: 'Books', namePtBr: 'Livros' },
+    mateo: { nameEn: 'Matthew', namePtBr: 'Mateus' },
+    marcos: { nameEn: 'Mark', namePtBr: 'Marcos' },
+    lucas: { nameEn: 'Luke', namePtBr: 'Lucas' },
+    juan: { nameEn: 'John', namePtBr: 'João' },
+    hechos: { nameEn: 'Acts', namePtBr: 'Atos' },
+    romanos: { nameEn: 'Romans', namePtBr: 'Romanos' },
+    corintios: { nameEn: 'Corinthians', namePtBr: 'Coríntios' },
+    galatas: { nameEn: 'Galatians', namePtBr: 'Gálatas' },
+    efesios: { nameEn: 'Ephesians', namePtBr: 'Efésios' },
+    filipenses: { nameEn: 'Philippians', namePtBr: 'Filipenses' },
+    colosenses: { nameEn: 'Colossians', namePtBr: 'Colossenses' },
+    tesalonicenses: { nameEn: 'Thessalonians', namePtBr: 'Tessalonicenses' },
+    timoteo: { nameEn: 'Timothy', namePtBr: 'Timóteo' },
+    tito: { nameEn: 'Titus', namePtBr: 'Tito' },
+    filemon: { nameEn: 'Philemon', namePtBr: 'Filemom' },
+    hebreos: { nameEn: 'Hebrews', namePtBr: 'Hebreus' },
+    santiago: { nameEn: 'James', namePtBr: 'Tiago' },
+    pedro: { nameEn: 'Peter', namePtBr: 'Pedro' },
+    judas: { nameEn: 'Jude', namePtBr: 'Judas' },
+    apocalipsis: { nameEn: 'Revelation', namePtBr: 'Apocalipse' }
+  };
+  if (glossary[normalized]) return glossary[normalized];
   const key = Deno.env.get('DEEPL_API_KEY');
-  if (!key) throw new Error('Translation service is not configured');
+  if (!key) return { nameEn: nameEs, namePtBr: nameEs };
   const endpoint = key.endsWith(':fx') ? 'https://api-free.deepl.com/v2/translate' : 'https://api.deepl.com/v2/translate';
   const translate = async (targetLang: 'EN' | 'PT-BR') => {
     const response = await fetch(endpoint, {
@@ -46,8 +72,13 @@ async function translateCategory(nameEs: string) {
     if (!response.ok || !result?.translations?.[0]?.text) throw new Error('The folder name could not be translated');
     return String(result.translations[0].text).trim().slice(0, 80);
   };
-  const [nameEn, namePtBr] = await Promise.all([translate('EN'), translate('PT-BR')]);
-  return { nameEn, namePtBr };
+  try {
+    const [nameEn, namePtBr] = await Promise.all([translate('EN'), translate('PT-BR')]);
+    return { nameEn, namePtBr };
+  } catch (error) {
+    console.error('Category translation failed; saving the Spanish name as fallback', error);
+    return { nameEn: nameEs, namePtBr: nameEs };
+  }
 }
 
 async function sendPushToCommunity(supabase: ReturnType<typeof createClient>, title: string, message: string, tag: string) {

@@ -28,7 +28,20 @@ Deno.serve(async (request) => {
       return new Response(JSON.stringify({ error: 'Origin not allowed' }), { status: 403, headers });
     }
 
-    const { subscription, language = 'es' } = await request.json();
+    const { action = 'register', subscription, endpoint: requestedEndpoint, language = 'es' } = await request.json();
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+      { auth: { persistSession: false } }
+    );
+    if (action === 'unregister') {
+      if (typeof requestedEndpoint !== 'string' || !requestedEndpoint.startsWith('https://')) {
+        return new Response(JSON.stringify({ error: 'Invalid endpoint' }), { status: 400, headers });
+      }
+      const { error } = await supabase.from('push_subscriptions').delete().eq('endpoint', requestedEndpoint);
+      if (error) throw error;
+      return new Response(JSON.stringify({ registered: false }), { status: 200, headers });
+    }
     const endpoint = subscription?.endpoint;
     const p256dh = subscription?.keys?.p256dh;
     const auth = subscription?.keys?.auth;
@@ -36,11 +49,6 @@ Deno.serve(async (request) => {
       return new Response(JSON.stringify({ error: 'Invalid subscription' }), { status: 400, headers });
     }
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-      { auth: { persistSession: false } }
-    );
     const safeLanguage = ['es', 'en', 'pt-BR'].includes(language) ? language : 'es';
     const { error } = await supabase.from('push_subscriptions').upsert({
       endpoint,
@@ -58,4 +66,3 @@ Deno.serve(async (request) => {
     return new Response(JSON.stringify({ error: 'Unable to register subscription' }), { status: 500, headers });
   }
 });
-

@@ -250,6 +250,13 @@ input:focus, select:focus, textarea:focus, .language-select:focus {
 .podcast-current { min-width: 34px; color: var(--text-secondary); font-size: .78rem; font-variant-numeric: tabular-nums; }
 .podcast-progress { width: 100%; min-height: auto; padding: 0; accent-color: var(--gold-primary); background: transparent; border: 0; box-shadow: none; }
 .podcast-card audio { display: none; }
+.podcast-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+.speed-control { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; color: var(--text-muted); font-size: .76rem; font-weight: 750; }
+.speed-button, .listened-toggle { min-height: 34px; padding: 6px 10px; color: #76530c; background: rgba(255,255,255,.78); border: 1px solid var(--border-soft); border-radius: 999px; font-weight: 800; }
+.speed-button.is-active, .listened-toggle.is-active { color: #fff; background: linear-gradient(135deg,#a8730e,#d8ad45); border-color: transparent; }
+.podcast-card.is-listened { border-color: rgba(189,138,25,.48); }
+.load-more-wrap { grid-column: 1/-1; display: flex; justify-content: center; padding: 4px 0 12px; }
+.load-more-wrap .btn { min-width: 180px; }
 .number { color: #76530c; background: linear-gradient(135deg, #f5e8bd, #e7c967); }
 .audio-meta { color: var(--text-muted); }
 audio { border-radius: 999px; }
@@ -316,6 +323,7 @@ footer { color: var(--text-secondary); background: rgba(255,250,241,.85); border
 .folder-item, .managed-card { background: rgba(255,255,255,.76); border-color: var(--border-soft); border-radius: 14px; }
 .folder-item:hover { background: #fffaf0; border-color: rgba(189,138,25,.42); }
 .folder-item.active { color: #6e4d08; background: var(--gold-soft); border-color: rgba(189,138,25,.35); }
+.icon-edit { width: 30px; height: 30px; color: #76530c; background: #fff9e8; border: 1px solid #e5d09a; border-radius: 8px; font-weight: 900; }
 .managed-status.published { color: #65500e; background: #f4e7ba; }
 .managed-status.scheduled { color: #76530c; background: #faecc1; }
 .announcement-form textarea { min-height: 96px; }

@@ -177,6 +177,21 @@ Deno.serve(async (request) => {
       return new Response(JSON.stringify({ category: data }), { headers });
     }
 
+    if (action === 'rename-category') {
+      const categoryId = Number(body.categoryId);
+      const nameEs = String(body.nameEs || '').trim().slice(0, 80);
+      if (!categoryId || !nameEs) return new Response(JSON.stringify({ error: 'The Spanish folder name is required' }), { status: 400, headers });
+      const { data: current, error: readError } = await supabase.from('categories').select('id,slug').eq('id', categoryId).single();
+      if (readError) throw readError;
+      if (current.slug === 'sin-categoria') return new Response(JSON.stringify({ error: 'The Uncategorized folder cannot be renamed' }), { status: 400, headers });
+      const { nameEn, namePtBr } = await translateCategory(nameEs);
+      const { data, error } = await supabase.from('categories').update({
+        name: nameEs, name_es: nameEs, name_en: nameEn, name_pt_br: namePtBr
+      }).eq('id', categoryId).select('id,name,name_es,name_en,name_pt_br,slug,parent_id,sort_order').single();
+      if (error) throw error;
+      return new Response(JSON.stringify({ category: data }), { headers });
+    }
+
     if (action === 'create-upload') {
       const fileName = safeFileName(String(body.fileName || 'audio.mp3'));
       const path = `capitulos/${fileName}`;

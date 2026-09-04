@@ -87,17 +87,20 @@ async function sendPushToCommunity(supabase: ReturnType<typeof createClient>, ti
   if (error) throw error;
   const invalid: string[] = [];
   let sent = 0;
+  let failed = 0;
   await Promise.allSettled((data || []).map(async (subscription) => {
     try {
       await webpush.sendNotification({ endpoint: subscription.endpoint, keys: { p256dh: subscription.p256dh, auth: subscription.auth } }, JSON.stringify({ title, body: message, tag, url: Deno.env.get('APP_URL') }), { TTL: 86400, urgency: 'normal' });
       sent += 1;
     } catch (pushError) {
+      failed += 1;
       const status = Number((pushError as { statusCode?: number }).statusCode || 0);
       if (status === 404 || status === 410) invalid.push(subscription.endpoint);
+      else console.error('Push failed', status, pushError);
     }
   }));
   if (invalid.length) await supabase.from('push_subscriptions').delete().in('endpoint', invalid);
-  return sent;
+  return { sent, failed, removed: invalid.length, total: (data || []).length };
 }
 
 Deno.serve(async (request) => {
@@ -131,8 +134,8 @@ Deno.serve(async (request) => {
       const startedAt = new Date().toISOString();
       const { error } = await supabase.from('journey_settings').upsert({ id: 1, started_at: startedAt, updated_at: startedAt });
       if (error) throw error;
-      const sent = await sendPushToCommunity(supabase, 'Conociendo al Novio', 'La jornada ha comenzado. Hoy caminamos juntas en el Día 1.', 'journey-started');
-      return new Response(JSON.stringify({ started_at: startedAt, sent }), { headers });
+      const delivery = await sendPushToCommunity(supabase, 'Conociendo al Novio', 'La jornada ha comenzado. Hoy caminamos juntas en el Día 1.', 'journey-started');
+      return new Response(JSON.stringify({ started_at: startedAt, ...delivery }), { headers });
     }
 
     if (action === 'send-announcement') {
@@ -142,22 +145,34 @@ Deno.serve(async (request) => {
       if (clearError) throw clearError;
       const { data: announcement, error } = await supabase.from('community_announcements').insert({ message, is_current: true }).select('id,message,created_at').single();
       if (error) throw error;
-      const sent = await sendPushToCommunity(supabase, 'Amigas del Novio', message, `announcement-${announcement.id}`);
-      return new Response(JSON.stringify({ announcement, sent }), { headers });
+      const delivery = await sendPushToCommunity(supabase, 'Amigas del Novio', message, `announcement-${announcement.id}`);
+      return new Response(JSON.stringify({ announcement, ...delivery }), { headers });
+    }
+
+    if (action === 'test-push') {
+      const delivery = await sendPushToCommunity(
+        supabase,
+        'Amigas del Novio',
+        'Prueba realizada correctamente. Las notificaciones están activas en este dispositivo.',
+        `push-test-${Date.now()}`
+      );
+      return new Response(JSON.stringify(delivery), { headers });
     }
 
     if (action === 'list-admin') {
-      const [categoryResult, audioResult, journeyResult, announcementResult] = await Promise.all([
+      const [categoryResult, audioResult, journeyResult, announcementResult, subscriptionResult] = await Promise.all([
         supabase.from('categories').select('id,name,name_es,name_en,name_pt_br,slug,parent_id,sort_order').order('sort_order').order('name'),
         supabase.from('audios').select('id,titulo,descricao,url,storage_path,category_id,status,scheduled_at,published_at,created_at').order('created_at', { ascending: false }),
         supabase.from('journey_settings').select('started_at').eq('id', 1).maybeSingle(),
-        supabase.from('community_announcements').select('message,created_at').eq('is_current', true).order('created_at', { ascending: false }).limit(1).maybeSingle()
+        supabase.from('community_announcements').select('message,created_at').eq('is_current', true).order('created_at', { ascending: false }).limit(1).maybeSingle(),
+        supabase.from('push_subscriptions').select('endpoint', { count: 'exact', head: true })
       ]);
       if (categoryResult.error) throw categoryResult.error;
       if (audioResult.error) throw audioResult.error;
       if (journeyResult.error) throw journeyResult.error;
       if (announcementResult.error) throw announcementResult.error;
-      return new Response(JSON.stringify({ categories: categoryResult.data, audios: audioResult.data, journey: journeyResult.data, announcement: announcementResult.data }), { headers });
+      if (subscriptionResult.error) throw subscriptionResult.error;
+      return new Response(JSON.stringify({ categories: categoryResult.data, audios: audioResult.data, journey: journeyResult.data, announcement: announcementResult.data, pushSubscribers: subscriptionResult.count || 0 }), { headers });
     }
 
     if (action === 'create-category') {

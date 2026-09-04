@@ -46,6 +46,7 @@ Deno.serve(async (request) => {
 
     const invalidEndpoints: string[] = [];
     let sent = 0;
+    let failed = 0;
     await Promise.allSettled((data as SubscriptionRow[] || []).map(async (subscription) => {
       const language = messages[subscription.language] ? subscription.language : 'es';
       const copy = messages[language];
@@ -62,6 +63,7 @@ Deno.serve(async (request) => {
         }, notification, { TTL: 86400, urgency: 'normal' });
         sent += 1;
       } catch (pushError) {
+        failed += 1;
         const status = Number((pushError as { statusCode?: number }).statusCode || 0);
         if (status === 404 || status === 410) invalidEndpoints.push(subscription.endpoint);
         else console.error('Push failed', status, pushError);
@@ -71,8 +73,11 @@ Deno.serve(async (request) => {
     if (invalidEndpoints.length) {
       await supabase.from('push_subscriptions').delete().in('endpoint', invalidEndpoints);
     }
-    await supabase.from('audios').update({ notification_sent_at: new Date().toISOString() }).eq('id', payload.record.id);
-    return Response.json({ sent, removed: invalidEndpoints.length });
+    if (sent > 0) {
+      await supabase.from('audios').update({ notification_sent_at: new Date().toISOString() }).eq('id', payload.record.id);
+    }
+    console.log('Push delivery result', { audioId: payload.record.id, sent, failed, removed: invalidEndpoints.length, total: (data || []).length });
+    return Response.json({ sent, failed, removed: invalidEndpoints.length, total: (data || []).length });
   } catch (error) {
     console.error(error);
     return Response.json({ error: 'Unable to send notifications' }, { status: 500 });

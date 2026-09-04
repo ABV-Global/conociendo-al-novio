@@ -1,5 +1,5 @@
-const CACHE_NAME = 'conociendo-al-novio-v24';
-const APP_SHELL = ['./', './index.html', './styles.css?v=24', './app.js?v=24', './manifest.json', './assets/amigas-del-novio-black-transparent-v4.png', './assets/amigas-del-novio-background-v1.png', './assets/amigas-del-novio-hero-v2.png', './assets/amigas-del-novio-hero-wide-v3.png', './assets/icon-192-v6.png', './assets/icon-512-v6.png'];
+const CACHE_NAME = 'conociendo-al-novio-v25';
+const APP_SHELL = ['./', './index.html', './styles.css?v=25', './app.js?v=25', './manifest.json', './assets/amigas-del-novio-black-transparent-v4.png', './assets/amigas-del-novio-background-v1.png', './assets/amigas-del-novio-hero-v2.png', './assets/amigas-del-novio-hero-wide-v3.png', './assets/icon-192-v6.png', './assets/icon-512-v6.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

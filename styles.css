@@ -246,6 +246,8 @@ input:focus, select:focus, textarea:focus, .language-select:focus {
 .podcast-meta .category-path { margin-top: 0; }
 .podcast-controls { display: grid; grid-template-columns: 48px auto minmax(160px,760px); align-items: center; justify-content: start; gap: 12px; width: 100%; min-width: 0; }
 .podcast-play { width: 48px; height: 48px; display: grid; place-items: center; padding: 0 0 0 2px; color: #fff; background: linear-gradient(135deg,#17120a,#4a3510); border: 2px solid #d0a02c; border-radius: 50%; box-shadow: 0 8px 20px rgba(76,51,8,.18); font-size: 1rem; }
+.podcast-play::before { content: ""; display: block; width: 0; height: 0; margin-left: 3px; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 11px solid #fff; }
+.podcast-play.is-playing::before { width: 4px; height: 15px; margin-left: -7px; background: #fff; border: 0; box-shadow: 8px 0 0 #fff; }
 .podcast-play:hover { transform: scale(1.04); }
 .podcast-current { min-width: 34px; color: var(--text-secondary); font-size: .78rem; font-variant-numeric: tabular-nums; }
 .podcast-progress { width: 100%; min-width: 0; min-height: auto; padding: 0; accent-color: var(--gold-primary); background: transparent; border: 0; box-shadow: none; }
